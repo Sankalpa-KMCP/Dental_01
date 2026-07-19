@@ -48,7 +48,7 @@ public class AuthController {
             HttpServletRequest request,
             HttpServletResponse response) {
 
-        String username = loginRequest.username().trim();
+        String username = loginRequest.username().trim().toLowerCase(java.util.Locale.ROOT);
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(username, loginRequest.password());
 

@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("Username must not be empty");
         }
 
-        AppUser user = userRepository.findByUsername(username.trim())
+        AppUser user = userRepository.findByUsername(username.trim().toLowerCase(java.util.Locale.ROOT))
             .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
         return new AppUserDetails(user);

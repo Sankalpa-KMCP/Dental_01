@@ -74,5 +74,22 @@ To run the full local stack:
 ## Vite Proxy Configuration
 The frontend dev server uses a proxy configured in `vite.config.js` to route all browser requests starting with `/api` relative paths to the backend server at `http://localhost:8080`. This removes the need for hardcoded origins or CORS setup during local development.
 
+## Staff User Administration
+The system provides restricted administrative capabilities to manage staff accounts (`ADMIN`, `RECEPTIONIST`, `DENTIST`, `DENTAL_ASSISTANT`). Patient (`PATIENT`) role management remains out of scope for this module.
+
+### API Routes (ADMIN only)
+- `POST /api/admin/staff-users` — Create a staff user. Requires valid CSRF.
+- `GET /api/admin/staff-users` — List staff users. Paginated and deterministically sorted by username.
+- `GET /api/admin/staff-users/{id}` — Inspect details of a specific staff user.
+- `PATCH /api/admin/staff-users/{id}/status` — Activate or deactivate a staff user account. Requires valid CSRF.
+- `PATCH /api/admin/staff-users/{id}/role` — Change the role of a staff user. Requires valid CSRF.
+
+### Policy Rules
+- **Non-Destructive Deactivation**: Accounts are deactivated (`active=false`) instead of deleted. Deactivated accounts are blocked from login authentication.
+- **Self-Modification Protection**: Administrators cannot demote or deactivate their own currently active session account.
+- **Final Active ADMIN Protection**: The final active `ADMIN` account cannot be deactivated or demoted, preventing lockouts.
+- **CSRF Requirements**: Valid CSRF tokens (obtained via `/api/auth/csrf`) are required for all state-changing endpoints.
+- **Auditing**: Authenticated administrators are recorded automatically in creation and modification fields.
+
 ---
-*Note: Authentication (login, logout, session security), Auditing, Patient Registry, and core Dental Management Modules are not implemented yet.*
+*Note: Patient Registry, Appointment Scheduling, Treatments, Prescriptions, and core Dental Business Modules are not implemented yet.*

@@ -25,18 +25,21 @@ public class AppUserService {
 
     @Transactional
     public AppUser createUser(String username, String email, String plaintextPassword, String roleName, boolean active) {
-        if (userRepository.existsByUsername(username)) {
-            throw new IllegalArgumentException("Username already exists");
+        String normalizedUsername = username.trim().toLowerCase(java.util.Locale.ROOT);
+        String normalizedEmail = email.trim().toLowerCase(java.util.Locale.ROOT);
+
+        if (userRepository.existsByUsername(normalizedUsername)) {
+            throw new com.se2030.dental.exception.DuplicateUsernameException("Username already exists");
         }
-        if (userRepository.existsByEmail(email)) {
-            throw new IllegalArgumentException("Email already exists");
+        if (userRepository.existsByEmail(normalizedEmail)) {
+            throw new com.se2030.dental.exception.DuplicateEmailException("Email already exists");
         }
 
         Role role = roleRepository.findByName(roleName)
                 .orElseThrow(() -> new IllegalArgumentException("Role not found: " + roleName));
 
         String encodedPassword = passwordEncoder.encode(plaintextPassword);
-        AppUser user = new AppUser(username, email, encodedPassword, role, active);
+        AppUser user = new AppUser(normalizedUsername, normalizedEmail, encodedPassword, role, active);
 
         return userRepository.save(user);
     }

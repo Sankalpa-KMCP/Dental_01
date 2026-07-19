@@ -148,7 +148,7 @@ class AuthControllerTests {
                         .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(activeAdmin.getId()))
-                .andExpect(jsonPath("$.username").value("adminUser"))
+                .andExpect(jsonPath("$.username").value("adminuser"))
                 .andExpect(jsonPath("$.email").value("admin@se2030.com"))
                 .andExpect(jsonPath("$.role").value("ADMIN"))
                 .andExpect(jsonPath("$.active").value(true))
@@ -183,7 +183,7 @@ class AuthControllerTests {
                         .session(session))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(activeAdmin.getId()))
-                .andExpect(jsonPath("$.username").value("adminUser"))
+                .andExpect(jsonPath("$.username").value("adminuser"))
                 .andExpect(jsonPath("$.email").value("admin@se2030.com"))
                 .andExpect(jsonPath("$.role").value("ADMIN"))
                 .andExpect(jsonPath("$.active").value(true));
@@ -270,8 +270,8 @@ class AuthControllerTests {
             AppUser newUser = new AppUser("auditeduser", "audited@se2030.com", "pw_hash", adminRole, true);
             AppUser saved = userRepository.saveAndFlush(newUser);
 
-            assertEquals("adminUser", saved.getCreatedBy());
-            assertEquals("adminUser", saved.getUpdatedBy());
+            assertEquals("adminuser", saved.getCreatedBy());
+            assertEquals("adminuser", saved.getUpdatedBy());
 
         } finally {
             context.setAuthentication(auth);

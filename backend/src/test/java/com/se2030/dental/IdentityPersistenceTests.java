@@ -95,10 +95,10 @@ class IdentityPersistenceTests {
         assertTrue(created.getPasswordHash().startsWith("$2a$"));
         assertEquals("DENTIST", created.getRole().getName());
 
-        assertThrows(IllegalArgumentException.class, () ->
+        assertThrows(com.se2030.dental.exception.DuplicateUsernameException.class, () ->
             userService.createUser("dentist_john", "different@se2030.com", "pw", "DENTIST", true)
         );
-        assertThrows(IllegalArgumentException.class, () ->
+        assertThrows(com.se2030.dental.exception.DuplicateEmailException.class, () ->
             userService.createUser("different", "john@se2030.com", "pw", "DENTIST", true)
         );
     }
