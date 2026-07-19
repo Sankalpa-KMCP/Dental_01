@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.se2030.dental.config.SecurityConfig;
 
 @WebMvcTest(HealthController.class)
-@Import(SecurityConfig.class)
+@Import({SecurityConfig.class, com.se2030.dental.security.CustomAuthenticationEntryPoint.class, com.se2030.dental.security.CustomAccessDeniedHandler.class})
 class HealthControllerTests {
 
     @Autowired
@@ -27,6 +27,9 @@ class HealthControllerTests {
 
     @MockitoBean
     private HealthService healthService;
+
+    @MockitoBean
+    private org.springframework.security.core.userdetails.UserDetailsService userDetailsService;
 
     @Test
     void health_whenDatabaseHealthy_returns200AndUp() throws Exception {

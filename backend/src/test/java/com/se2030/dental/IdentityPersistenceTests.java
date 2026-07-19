@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
-@Import({AuditingConfig.class, SecurityConfig.class, AppUserService.class})
+@Import({AuditingConfig.class, org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.class, AppUserService.class})
 @TestPropertySource(properties = {
     "spring.flyway.enabled=false",
     "spring.jpa.hibernate.ddl-auto=create-drop",
@@ -95,10 +95,10 @@ class IdentityPersistenceTests {
         assertTrue(created.getPasswordHash().startsWith("$2a$"));
         assertEquals("DENTIST", created.getRole().getName());
 
-        assertThrows(IllegalArgumentException.class, () -> 
+        assertThrows(IllegalArgumentException.class, () ->
             userService.createUser("dentist_john", "different@se2030.com", "pw", "DENTIST", true)
         );
-        assertThrows(IllegalArgumentException.class, () -> 
+        assertThrows(IllegalArgumentException.class, () ->
             userService.createUser("different", "john@se2030.com", "pw", "DENTIST", true)
         );
     }
