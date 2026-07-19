@@ -1,0 +1,2 @@
+-- Initial Flyway baseline migration
+-- This file establishes the schema version history without creating any tables.
